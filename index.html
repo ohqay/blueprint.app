@@ -16,7 +16,7 @@
     />
     <style>
       :root {
-        --background: #0a0a0a;
+        --background: #050507;
         --text-primary: #f2f2f2;
         --text-secondary: #a3a3a3;
         --accent-primary: #007aff;
@@ -50,21 +50,85 @@
         overflow: hidden;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at 20% 20%,
+          rgba(0, 122, 255, 0.1),
+          transparent 30%
+        );
+        animation: move-gradient 20s linear infinite;
+        z-index: 0;
+      }
+
+      @keyframes move-gradient {
+        0% {
+          background: radial-gradient(
+            circle at 20% 20%,
+            rgba(0, 122, 255, 0.1),
+            transparent 30%
+          );
+        }
+        50% {
+          background: radial-gradient(
+            circle at 80% 80%,
+            rgba(0, 122, 255, 0.1),
+            transparent 30%
+          );
+        }
+        100% {
+          background: radial-gradient(
+            circle at 20% 20%,
+            rgba(0, 122, 255, 0.1),
+            transparent 30%
+          );
+        }
       }
 
       main {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 2.5rem;
         max-width: 680px;
-        animation: fadeIn 1s ease-out forwards;
-        opacity: 0;
+        transition: transform 0.1s ease-out;
       }
 
-      @keyframes fadeIn {
+      .header,
+      .waitlist-form,
+      .app-animation-container {
+        opacity: 0;
+        animation: fadeAndSlideUp 0.8s ease-out forwards;
+      }
+
+      .header {
+        animation-delay: 0.2s;
+      }
+      .waitlist-form {
+        animation-delay: 0.4s;
+      }
+      .app-animation-container {
+        animation-delay: 0.6s;
+      }
+
+      @keyframes fadeAndSlideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
         to {
           opacity: 1;
+          transform: translateY(0);
         }
       }
 
@@ -144,11 +208,14 @@
         border: none;
         border-radius: 0.5rem;
         cursor: pointer;
-        transition: transform 0.2s ease;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
       }
 
       .submit-button:hover {
         transform: scale(1.05);
+        box-shadow: 0 0 15px var(--accent-glow);
       }
 
       .submit-button:active {
@@ -166,13 +233,64 @@
           rgba(255, 255, 255, 0)
         );
         border-radius: 1rem;
-        padding: 1.5rem;
+        padding: 1rem;
+        padding-top: 2.5rem;
         border: 1px solid var(--surface-border);
         position: relative;
         overflow: hidden;
         box-shadow:
           0 20px 25px -5px rgba(0, 0, 0, 0.2),
           0 8px 10px -6px rgba(0, 0, 0, 0.2);
+      }
+
+      .app-animation-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 150%;
+        height: 100%;
+        background: linear-gradient(
+          100deg,
+          transparent 40%,
+          rgba(255, 255, 255, 0.05) 50%,
+          transparent 60%
+        );
+        transform: translateX(-150%) skewX(-20deg);
+        animation: glint 5s ease-in-out infinite;
+      }
+
+      @keyframes glint {
+        0%,
+        20% {
+          transform: translateX(-150%) skewX(-20deg);
+        }
+        100% {
+          transform: translateX(150%) skewX(-20deg);
+        }
+      }
+
+      .window-controls {
+        position: absolute;
+        top: 0.75rem;
+        left: 1rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .window-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .dot-red {
+        background-color: #ff5f56;
+      }
+      .dot-yellow {
+        background-color: #ffbd2e;
+      }
+      .dot-green {
+        background-color: #27c93f;
       }
 
       .mock-ui {
@@ -184,9 +302,10 @@
         text-align: left;
         font-size: 0.875rem;
         position: absolute;
-        width: calc(100% - 3rem);
-        top: 1.5rem;
-        left: 1.5rem;
+        width: calc(100% - 2rem);
+        height: calc(100% - 3.5rem);
+        top: 2.5rem;
+        left: 1rem;
         opacity: 0;
         transform: scale(0.95);
         transition:
@@ -234,8 +353,9 @@
       .mock-prompt-content {
         line-height: 1.7;
         color: var(--text-secondary);
-        max-height: 200px;
+        height: calc(100% - 2.5rem);
         overflow-y: auto;
+        padding-right: 0.5rem;
       }
 
       .placeholder {
@@ -287,7 +407,7 @@
     </style>
   </head>
   <body>
-    <main>
+    <main id="main-content">
       <div class="header">
         <div class="logo"> Blueprinter</div>
         <h1>Your AI prompts, on command.</h1>
@@ -314,6 +434,11 @@
       </form>
 
       <div class="app-animation-container">
+        <div class="window-controls">
+          <div class="window-dot dot-red"></div>
+          <div class="window-dot dot-yellow"></div>
+          <div class="window-dot dot-green"></div>
+        </div>
         <div class="mock-ui" id="mock-ui">
           <div class="mock-search-bar">
             &gt;&nbsp;<span id="search-text"></span><span
@@ -332,6 +457,22 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // Parallax mouse effect
+        const mainContent = document.getElementById("main-content");
+        window.addEventListener("mousemove", (e) => {
+          const { clientX, clientY } = e;
+          const { innerWidth, innerHeight } = window;
+          const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
+          const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
+
+          requestAnimationFrame(() => {
+            mainContent.style.transform = `rotateY(${x * 3}deg) rotateX(${
+              y * -3
+            }deg)`;
+          });
+        });
+
+        // Core animation logic
         const mockUi = document.getElementById("mock-ui");
         const searchTextEl = document.getElementById("search-text");
         const promptContentEl = document.getElementById("prompt-content");
