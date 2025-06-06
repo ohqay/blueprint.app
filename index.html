@@ -234,6 +234,8 @@
       .mock-prompt-content {
         line-height: 1.7;
         color: var(--text-secondary);
+        max-height: 200px;
+        overflow-y: auto;
       }
 
       .placeholder {
@@ -336,33 +338,102 @@
         const copiedMessageEl = document.getElementById("copied-message");
 
         const searchQueries = [
-          "angry email for refund",
-          "summarize article",
-          "git commit message",
+          "python docstring",
+          "twitter thread hook",
+          "summarize text",
+          "refactor javascript",
+          "cold email outreach",
+          "blog post outline",
+          "research abstract",
+          "meeting summary",
         ];
         const prompts = [
           {
-            name: "Stern Email",
-            text: "Subject: Urgent: Refund Request for Order #[order_number]\n\nDear [recipient_name],\n\nI am writing to demand a full refund for the above order. The product was [reason_for_refund]. This is unacceptable.\n\nSincerely,\n[your_name]",
-            placeholders: [
-              "[order_number]",
-              "[recipient_name]",
-              "[reason_for_refund]",
-              "[your_name]",
+            name: "Python Docstring Generator",
+            text: "Act as a senior Python developer. Generate a complete and professional docstring for the following Python function in [docstring_format] format.\n\nFunction:\n[function_code]",
+            placeholders: ["[docstring_format]", "[function_code]"],
+            fills: [
+              "Google Style",
+              "def get_user(user_id: int) -> User: ...",
             ],
-            fills: ["#XZ-481516", "Support Team", "defective on arrival", "Alex"],
           },
           {
-            name: "Summarize Article",
-            text: "Please provide a 3-sentence summary of the following article, focusing on its key arguments and conclusions:\n\n[article_url]",
-            placeholders: ["[article_url]"],
-            fills: ["https://example.com/article"],
+            name: "Twitter Thread Hook",
+            text: "You are a viral content specialist. Generate 5 compelling hooks for a Twitter thread about [topic]. The target audience is [audience] and the tone should be [tone].",
+            placeholders: ["[topic]", "[audience]", "[tone]"],
+            fills: [
+              "AI productivity tools",
+              "software developers",
+              "insightful and exciting",
+            ],
           },
           {
-            name: "Git Commit Message",
-            text: "feat([scope]): [description]\n\n[optional_body]",
-            placeholders: ["[scope]", "[description]", "[optional_body]"],
-            fills: ["auth", "implement password reset", "Adds new API endpoint and sends reset email."],
+            name: "Text Summarizer",
+            text: "Summarize the following text into a [summary_length] paragraph. Focus on the key takeaways and action items. Extract the core message in a way that a [target_role] would understand.\n\nText:\n[source_text]",
+            placeholders: [
+              "[summary_length]",
+              "[target_role]",
+              "[source_text]",
+            ],
+            fills: [
+              "single",
+              "busy executive",
+              "https://some.article/about-market-trends",
+            ],
+          },
+          {
+            name: "Code Refactor",
+            text: "You are an expert [language] programmer. Refactor the following code to improve [goal]. Do not change the external API or functionality. Explain your changes step-by-step.\n\nCode:\n[code_snippet]",
+            placeholders: ["[language]", "[goal]", "[code_snippet]"],
+            fills: [
+              "JavaScript",
+              "readability and performance",
+              "const x = (a,b) => { /* ... */ }",
+            ],
+          },
+          {
+            name: "Personalized Cold Email",
+            text: "Write a concise cold email to [prospect_name] at [company_name]. Reference their recent achievement: [recent_achievement]. Connect it to how our product, [my_product], can help them achieve [business_goal].",
+            placeholders: [
+              "[prospect_name]",
+              "[company_name]",
+              "[recent_achievement]",
+              "[my_product]",
+              "[business_goal]",
+            ],
+            fills: [
+              "Jane Doe",
+              "Acme Corp",
+              "launching their new platform",
+              "Blueprinter",
+              "streamline their team's workflow",
+            ],
+          },
+          {
+            name: "SEO Blog Post Outline",
+            text: "Create a detailed blog post outline for the topic '[topic]'. The primary keyword is '[primary_keyword]'. Include H2 and H3 headings, and suggest key points for each section. The target audience is [audience].",
+            placeholders: ["[topic]", "[primary_keyword]", "[audience]"],
+            fills: [
+              "The Future of AI in Education",
+              "AI in education",
+              "university students and faculty",
+            ],
+          },
+          {
+            name: "Academic Abstract Generator",
+            text: "Generate a structured abstract (max [word_count] words) for a research paper. Include: Background, Methods, Results, and Conclusion. The paper's topic is [paper_topic], and the key finding is [key_finding].",
+            placeholders: ["[word_count]", "[paper_topic]", "[key_finding]"],
+            fills: [
+              "250",
+              "the effect of CBT on anxiety",
+              "a significant reduction in symptoms",
+            ],
+          },
+          {
+            name: "Action-Oriented Meeting Summary",
+            text: "You are a world-class executive assistant. Review the following meeting transcript and generate a summary. The summary must include: 1. Key Decisions Made. 2. Action Items (with assigned owners: [attendees]). 3. Next Steps.\n\nTranscript:\n[meeting_transcript]",
+            placeholders: ["[attendees]", "[meeting_transcript]"],
+            fills: ["Tarek, Sarah, Mike", "(pasted transcript text)"],
           },
         ];
 
@@ -396,10 +467,7 @@
           await sleep(500);
 
           // 2. Show the prompt template
-          let promptHTML = currentPrompt.text.replace(
-            /\n/g,
-            "<br>"
-          );
+          let promptHTML = currentPrompt.text.replace(/\n/g, "<br>");
           currentPrompt.placeholders.forEach((p, i) => {
             promptHTML = promptHTML.replace(
               p,
