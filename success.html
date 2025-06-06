@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thanks for Joining! — Blueprinter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: #050507;
+        --text-primary: #f2f2f2;
+        --text-secondary: #a3a3a3;
+        --accent-primary: #007aff;
+      }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background-color: var(--background);
+        color: var(--text-primary);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100vh;
+        padding: 2rem;
+        -webkit-font-smoothing: antialiased;
+        position: relative;
+        overflow: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        top: -50vh;
+        left: -50vw;
+        width: 200vw;
+        height: 200vh;
+        z-index: 0;
+        background: radial-gradient(
+          circle,
+          var(--accent-primary),
+          transparent 40%
+        );
+        opacity: 0.15;
+        animation: move-background 40s infinite alternate linear;
+        pointer-events: none;
+      }
+      @keyframes move-background {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(50vw, 50vh);
+        }
+      }
+      main {
+        position: relative;
+        z-index: 1;
+      }
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+      p {
+        font-size: 1.125rem;
+        color: var(--text-secondary);
+        max-width: 450px;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+      a {
+        color: var(--accent-primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.2s ease;
+      }
+      a:hover {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>You're on the list! ✅</h1>
+      <p>
+        Thanks for joining the waitlist for Blueprinter. We'll be in touch soon
+        with updates and early access.
+      </p>
+      <a href="https://blueprinter.app">Return to Homepage</a>
+    </main>
+  </body>
+</html>

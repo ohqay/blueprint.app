@@ -93,7 +93,7 @@
       }
 
       .header,
-      .email-input,
+      .waitlist-form,
       .app-animation-container {
         opacity: 0;
         animation: fadeAndSlideUp 0.8s ease-out forwards;
@@ -102,7 +102,7 @@
       .header {
         animation-delay: 0.2s;
       }
-      .email-input {
+      .waitlist-form {
         animation-delay: 0.4s;
       }
       .app-animation-container {
@@ -201,10 +201,7 @@
         transition:
           transform 0.2s ease,
           box-shadow 0.3s ease-in-out;
-        opacity: 0;
-        animation:
-          shiny-button-load 0.8s ease-out 0.5s forwards,
-          shiny-button-shine 4s 1.5s infinite;
+        animation: shiny-button-shine 4s 1.5s infinite;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -236,17 +233,6 @@
 
       .shiny-button:active {
         transform: scale(0.97);
-      }
-
-      @keyframes shiny-button-load {
-        from {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        to {
-          transform: scale(1);
-          opacity: 1;
-        }
       }
 
       @keyframes shiny-button-shine {
@@ -479,10 +465,33 @@
       </div>
 
       <form
-        class="waitlist-form"
-        action="YOUR_FORM_ACTION_URL"
+        action="https://api.web3forms.com/submit"
         method="POST"
+        class="waitlist-form"
       >
+        <!-- Web3Forms Configuration -->
+        <input
+          type="hidden"
+          name="access_key"
+          value="070632b1-6c13-4292-a234-265637905438"
+        />
+        <input
+          type="hidden"
+          name="subject"
+          value="New Waitlist Signup for Blueprinter"
+        />
+        <input
+          type="hidden"
+          name="from_name"
+          value="Blueprinter Waitlist"
+        />
+        <input
+          type="hidden"
+          name="redirect"
+          value="/success.html"
+        />
+        <input type="checkbox" name="botcheck" style="display: none" />
+
         <input
           type="email"
           name="email"
@@ -524,8 +533,8 @@
         window.addEventListener("mousemove", (e) => {
           const { clientX, clientY } = e;
           const { innerWidth, innerHeight } = window;
-          const x = (clientX / innerWidth - 0.5) * 2; // -1 to 1
-          const y = (clientY / innerHeight - 0.5) * 2; // -1 to 1
+          const x = (clientX / innerWidth - 0.5) * 2;
+          const y = (clientY / innerHeight - 0.5) * 2;
 
           requestAnimationFrame(() => {
             mainContent.style.transform = `rotateY(${x * 3}deg) rotateX(${
