@@ -3,7 +3,7 @@
   "module": "index.ts",
   "devDependencies": {
     "@types/bun": "latest",
-    "live-server": "^1.2.2"
+    "live-server": "^1.2.0"
   },
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
   },
   "type": "module",
   "dependencies": {
-    "typescript": "5.6.3"
+    "typescript": "5.6.3",
+    "vercel": "^42.3.0"
   }
 }
