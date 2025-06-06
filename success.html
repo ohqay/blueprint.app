@@ -26,9 +26,6 @@
         background-color: var(--background);
         color: var(--text-primary);
         display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
         height: 100vh;
         padding: 2rem;
         -webkit-font-smoothing: antialiased;
@@ -63,6 +60,7 @@
       main {
         position: relative;
         z-index: 1;
+        margin: auto; /* This ensures perfect centering */
       }
       .success-container {
         background: linear-gradient(
@@ -76,7 +74,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 1rem;
         box-shadow:
           0 20px 25px -5px rgba(0, 0, 0, 0.2),
           0 8px 10px -6px rgba(0, 0, 0, 0.2);
@@ -96,7 +93,6 @@
       .checkmark-wrapper {
         width: 80px;
         height: 80px;
-        margin-bottom: 0.5rem;
       }
       .checkmark__circle {
         stroke-dasharray: 166;
@@ -129,19 +125,22 @@
         font-size: 2rem;
         font-weight: 700;
         letter-spacing: -0.02em;
+        margin-top: 1rem;
       }
       p {
         font-size: 1rem;
         color: var(--text-secondary);
         max-width: 320px;
         line-height: 1.6;
-        margin-bottom: 1rem;
+        margin-top: 0.5rem;
       }
       a {
         color: var(--accent-primary);
         text-decoration: none;
         font-weight: 500;
         transition: opacity 0.2s ease;
+        margin-top: 1.5rem;
+        display: inline-block;
       }
       a:hover {
         opacity: 0.8;
